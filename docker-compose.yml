@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  xai-assist:
+    build: .
+    ports:
+      - "8000:8000"  # API
+      - "8501:8501"  # Streamlit
+    volumes:
+      - ./data:/app/data
+    environment:
+      - DATABASE_URL=sqlite:///./data/xai_assist.db
+    restart: unless-stopped
