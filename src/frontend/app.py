@@ -13,6 +13,11 @@ import plotly.graph_objects as go
 from datetime import datetime
 import joblib
 
+st.set_page_config(
+    page_title="AI Prediction Dashboard",
+    page_icon="🎯",
+    layout="wide"
+)
 # Add the project root to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
@@ -46,13 +51,6 @@ except ImportError as e:
                 f.write(str(data))
             return True
 import tempfile
-
-# Set page config
-st.set_page_config(
-    page_title="AI Prediction Dashboard",
-    page_icon="🎯",
-    layout="wide"
-)
 
 # Custom CSS to fix text alignment in status boxes and add progress bars
 st.markdown("""
@@ -1351,7 +1349,9 @@ def show_liver_prediction():
                             'A/G Balance': min(1, albumin_globulin_ratio / 2.5)
                         }
                         
-                        fig = go.Figure()
+                        fig = go.Figure(data=go.Scatterpolar(
+                            fill='toself'
+                            ))
                         fig.add_trace(go.Scatterpolar(
                             r=list(radar_data.values()),
                             theta=list(radar_data.keys()),
@@ -1361,7 +1361,10 @@ def show_liver_prediction():
                         
                         fig.update_layout(
                             polar=dict(radialaxis=dict(visible=True, range=[0, 1])),
-                            showlegend=False
+                            showlegend=False,
+                            margin=dict(l=0, r=40, t=20, b=20),  # Adjust margins to shift graph left
+                            width=500,
+                            height=400
                         )
                         
                         st.plotly_chart(fig)
